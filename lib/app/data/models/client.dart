@@ -1,15 +1,15 @@
 class ClientModel {
-  int id;
+  int? id;
   String name;
   String email;
-  int createdBy;
+  int? createdBy;
   int lastUpdateBy;
 
   ClientModel({
-    required this.id,
+    this.id,
     required this.name,
     required this.email,
-    required this.createdBy,
+    this.createdBy,
     required this.lastUpdateBy,
   });
 

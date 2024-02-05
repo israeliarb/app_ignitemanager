@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_ignitemanager/app/data/models/client.dart';
+import 'package:app_ignitemanager/app/data/models/client_tag.dart';
 import 'package:app_ignitemanager/app/data/models/tag.dart';
 import 'package:app_ignitemanager/app/data/models/user.dart';
 import 'package:app_ignitemanager/app/data/models/user_login_request.dart';
@@ -66,6 +67,76 @@ class Api extends GetConnect {
     } else {
       throw Exception('Falha ao buscar o cliente por ID');
     }
+  }
+
+  Future<ClientModel> putClient(ClientModel client) async {
+    int clientId = client.id!;
+    try {
+      Map<String, dynamic> clientData = {
+        'name': client.name,
+        'email': client.email,
+        'last_update_by': client.lastUpdateBy,
+      };
+
+      var response = await put('client/$clientId', jsonEncode(clientData));
+
+      return ClientModel.fromJson(response.body);
+    } catch (e) {
+      throw Exception('Erro durante a comunicação com o servidor: $e');
+    }
+  }
+
+  Future<ClientModel> registerClient(ClientModel client) async {
+    try {
+      Map<String, dynamic> clientData = {
+        'name': client.name,
+        'email': client.email,
+        'created_by': client.createdBy,
+        'last_update_by': client.lastUpdateBy,
+      };
+
+      var response =
+          _errorHandler(await post('client', jsonEncode(clientData)));
+
+      return ClientModel.fromJson(response.body);
+    } catch (e) {
+      throw Exception('Erro durante a comunicação com o servidor: $e');
+    }
+  }
+
+  Future<ClientTagModel> registerClientTag(ClientTagModel clientTag) async {
+    try {
+      Map<String, dynamic> clientTagData = {
+        'client_id': clientTag.clientId,
+        'tag_id': clientTag.tagId,
+      };
+
+      var response =
+          _errorHandler(await post('client-tag/', jsonEncode(clientTagData)));
+
+      return ClientTagModel.fromJson(response.body);
+    } catch (e) {
+      throw Exception('Erro durante a comunicação com o servidor: $e');
+    }
+  }
+
+  Future<List<ClientTagModel>> getClientTags(int id) async {
+    var response = _errorHandler(await get('client/$id/client-tags/'));
+
+    List<ClientTagModel> data = [];
+    for (var clientTag in response.body) {
+      data.add(ClientTagModel.fromJson(clientTag));
+    }
+
+    return data;
+  }
+
+  Future<void> deleteClientTag(int id) async {
+    _errorHandler(await delete('client-tag/$id/'));
+  }
+
+  Future<void> deleteClient(int id) async {
+    _errorHandler(await delete('client/$id/'));
   }
 
   Future<List<TagModel>> getTags() async {

@@ -1,7 +1,11 @@
-class ClientTagModel {
+import 'package:get/get.dart';
+
+class ClientTagModel extends GetxController {
   int id;
   int clientId;
   int tagId;
+
+  var isChecked = false.obs;
 
   ClientTagModel({
     required this.id,
@@ -10,8 +14,8 @@ class ClientTagModel {
   });
 
   factory ClientTagModel.fromJson(Map<String, dynamic> json) => ClientTagModel(
-        id: json['id'],
-        clientId: json['clientId'],
-        tagId: json['tagId'],
+        id: json['id'] ?? 0,
+        clientId: json['client_id'],
+        tagId: json['tag_id'],
       );
 }
