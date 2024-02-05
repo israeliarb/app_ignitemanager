@@ -6,7 +6,10 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Ignite Manager')),
+      appBar: AppBar(
+        title: Text('Ignite Manager'),
+        automaticallyImplyLeading: false,
+      ),
       //body: controller.obx((state) => Text('Ok')),
       body: Text('Ok'),
     );

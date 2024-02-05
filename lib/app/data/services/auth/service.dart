@@ -32,4 +32,9 @@ class AuthService extends GetxService {
       user.value = value;
     });
   }
+
+  Future<bool> isAuthenticated() async {
+    await _getUser();
+    return isLogged;
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:app_ignitemanager/app/modules/clients/page.dart';
 import 'package:app_ignitemanager/app/modules/dashboard/controller.dart';
 import 'package:app_ignitemanager/app/modules/home/page.dart';
+import 'package:app_ignitemanager/app/modules/tags/page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -42,7 +43,7 @@ class DashboardPage extends GetView<DashboardController> {
           children: [
             HomePage(),
             ClientsPage(),
-            Text('Tags'),
+            TagsPage(),
             Text('Meu Perfil'),
           ],
         ),

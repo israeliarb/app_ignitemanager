@@ -89,7 +89,7 @@ class ClientsPage extends GetView<ClientsController> {
     Get.defaultDialog(
       title: 'Editar Cliente',
       content: Container(
-        width: Get.width * 0.7, // Ajuste o tamanho conforme necessário
+        width: Get.width * 0.7,
         child: Column(
           children: [
             SizedBox(height: 16),
@@ -114,14 +114,13 @@ class ClientsPage extends GetView<ClientsController> {
       ),
       confirm: ElevatedButton(
         onPressed: () {
-          // Implemente a lógica de edição aqui
-          Get.back(); // Fechar o modal após a edição
+          Get.back();
         },
         child: Text('Salvar'),
       ),
       cancel: ElevatedButton(
         onPressed: () {
-          Get.back(); // Fechar o modal sem salvar
+          Get.back();
         },
         child: Text('Cancelar'),
       ),

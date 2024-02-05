@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_ignitemanager/app/data/models/client.dart';
+import 'package:app_ignitemanager/app/data/models/tag.dart';
 import 'package:app_ignitemanager/app/data/models/user.dart';
 import 'package:app_ignitemanager/app/data/models/user_login_request.dart';
 import 'package:app_ignitemanager/app/data/models/user_login_response.dart';
@@ -64,6 +65,58 @@ class Api extends GetConnect {
       return ClientModel.fromJson(response.body);
     } else {
       throw Exception('Falha ao buscar o cliente por ID');
+    }
+  }
+
+  Future<List<TagModel>> getTags() async {
+    var response = _errorHandler(await get('tag/'));
+
+    List<TagModel> data = [];
+    for (var client in response.body) {
+      data.add(TagModel.fromJson(client));
+    }
+
+    return data;
+  }
+
+  Future<TagModel> getTagById(int tagId) async {
+    var response = _errorHandler(await get('tag/$tagId'));
+
+    if (response.statusCode == 200) {
+      return TagModel.fromJson(response.body);
+    } else {
+      throw Exception('Falha ao buscar a tag por ID');
+    }
+  }
+
+  Future<TagModel> putTag(TagModel tag) async {
+    int tagId = tag.id!;
+    try {
+      Map<String, dynamic> tagData = {
+        'name': tag.name,
+        'active': tag.active,
+      };
+
+      var response = await put('tag/$tagId', jsonEncode(tagData));
+
+      return TagModel.fromJson(response.body);
+    } catch (e) {
+      throw Exception('Erro durante a comunicação com o servidor: $e');
+    }
+  }
+
+  Future<TagModel> registerTag(TagModel tag) async {
+    try {
+      Map<String, dynamic> tagData = {
+        'name': tag.name,
+        'active': tag.active,
+      };
+
+      var response = _errorHandler(await post('tag', jsonEncode(tagData)));
+
+      return TagModel.fromJson(response.body);
+    } catch (e) {
+      throw Exception('Erro durante a comunicação com o servidor: $e');
     }
   }
 
