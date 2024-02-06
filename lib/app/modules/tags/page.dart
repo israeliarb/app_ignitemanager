@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TagsPage extends GetView<TagsController> {
-  String searchText = '';
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -1,13 +1,13 @@
 class UserModel {
-  int id;
+  int? id;
   String name;
-  String type;
+  String? type;
   String email;
 
   UserModel({
-    required this.id,
+    this.id,
     required this.name,
-    required this.type,
+    this.type,
     required this.email,
   });
 

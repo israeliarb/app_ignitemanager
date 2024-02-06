@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ClientsPage extends GetView<ClientsController> {
-  String searchText = '';
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -85,7 +83,17 @@ class ClientsPage extends GetView<ClientsController> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  _openEditModal(clientId: controller.selectedItem.value);
+                  if (controller.selectedItem.value == 0) {
+                    Get.snackbar(
+                      'Erro',
+                      'Nenhum cliente selecionado. Selecione um cliente antes de editar.',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  } else {
+                    _openEditModal(clientId: controller.selectedItem.value);
+                  }
                 },
                 child: Text('Editar Cliente'),
               ),
@@ -94,8 +102,18 @@ class ClientsPage extends GetView<ClientsController> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  await controller.updateTagList();
-                  _openTagsModal(clientId: controller.selectedItem.value);
+                  if (controller.selectedItem.value == 0) {
+                    Get.snackbar(
+                      'Erro',
+                      'Nenhum cliente selecionado. Selecione um cliente antes de editar tags.',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  } else {
+                    await controller.updateTagList();
+                    _openTagsModal(clientId: controller.selectedItem.value);
+                  }
                 },
                 child: Text('Editar Tags'),
               ),

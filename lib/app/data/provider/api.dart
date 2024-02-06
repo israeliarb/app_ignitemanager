@@ -209,8 +209,21 @@ class Api extends GetConnect {
     return UserModel.fromJson(response.body);
   }
 
-  Future<UserModel> putUser(UserProfileRequestModel data) async {
-    var response = _errorHandler(await put('cliente', jsonEncode(data)));
+  Future<UserModel> putUser(UserModel user, int userId) async {
+    var data = {
+      'name': user.name,
+      'email': user.email,
+      'password': ' ',
+    };
+    var response = _errorHandler(await put('user/$userId/', jsonEncode(data)));
+
+    print(response.body);
+    return UserModel.fromJson(response.body);
+  }
+
+  Future<UserModel> putUserPassword(
+      UserProfileRequestModel data, int userId) async {
+    var response = _errorHandler(await put('user/$userId/', jsonEncode(data)));
 
     return UserModel.fromJson(response.body);
   }
