@@ -9,7 +9,10 @@ class TagsPage extends GetView<TagsController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('Gestão de Tags')),
+        appBar: AppBar(
+          title: Text('Gestão de Tags'),
+          automaticallyImplyLeading: false,
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [

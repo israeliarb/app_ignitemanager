@@ -8,7 +8,10 @@ class UserProfilePage extends GetView<UserProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Meu Perfil')),
+      appBar: AppBar(
+        title: Text('Meu Perfil'),
+        automaticallyImplyLeading: false,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: FutureBuilder(
@@ -97,6 +100,15 @@ class UserProfilePage extends GetView<UserProfileController> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 16),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        controller.logout();
+                      },
+                      child: Text('Logout'),
+                    ),
+                  ]),
                 ],
               );
             }

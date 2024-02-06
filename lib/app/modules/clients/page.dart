@@ -10,7 +10,10 @@ class ClientsPage extends GetView<ClientsController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('Gestão de Clientes')),
+        appBar: AppBar(
+          title: Text('Gestão de Clientes'),
+          automaticallyImplyLeading: false,
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -122,8 +125,18 @@ class ClientsPage extends GetView<ClientsController> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  await _showDeleteConfirmationDialog(
-                      controller.selectedItem.value);
+                  if (controller.selectedItem.value == 0) {
+                    Get.snackbar(
+                      'Erro',
+                      'Nenhum cliente selecionado. Selecione um cliente antes de excluir.',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  } else {
+                    await _showDeleteConfirmationDialog(
+                        controller.selectedItem.value);
+                  }
                 },
                 child: Text('Excluir Cliente'),
               ),

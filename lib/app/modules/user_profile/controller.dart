@@ -1,11 +1,14 @@
 import 'package:app_ignitemanager/app/data/models/user.dart';
 import 'package:app_ignitemanager/app/data/models/user_profile_request.dart';
+import 'package:app_ignitemanager/app/data/services/auth/service.dart';
 import 'package:app_ignitemanager/app/modules/user_profile/repository.dart';
+import 'package:app_ignitemanager/app/routes/routes.dart';
 import 'package:get/get.dart';
 
 class UserProfileController extends GetxController {
   UserProfileRepository _repository;
   UserProfileController(this._repository);
+  AuthService _authService = Get.find<AuthService>();
 
   var userName = ''.obs;
   var userEmail = ''.obs;
@@ -63,5 +66,11 @@ class UserProfileController extends GetxController {
     } catch (e) {
       throw Exception('Erro ao processar a resposta do servidor');
     }
+  }
+
+  void logout() async {
+    await _authService.logout();
+
+    Get.offAllNamed(Routes.login);
   }
 }

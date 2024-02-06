@@ -10,7 +10,10 @@ class UsersPage extends GetView<UsersController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('Gestão de Usuários')),
+        appBar: AppBar(
+          title: Text('Gestão de Usuários'),
+          automaticallyImplyLeading: false,
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
