@@ -3,6 +3,7 @@ import 'package:app_ignitemanager/app/modules/dashboard/controller.dart';
 import 'package:app_ignitemanager/app/modules/home/page.dart';
 import 'package:app_ignitemanager/app/modules/tags/page.dart';
 import 'package:app_ignitemanager/app/modules/user_profile/page.dart';
+import 'package:app_ignitemanager/app/modules/users/page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,6 +20,11 @@ class DashboardPage extends GetView<DashboardController> {
               icon: Icon(Icons.home_outlined),
               label: 'Início',
               selectedIcon: Icon(Icons.home),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.supervised_user_circle_outlined),
+              label: 'Usuários',
+              selectedIcon: Icon(Icons.supervised_user_circle),
             ),
             NavigationDestination(
               icon: Icon(Icons.people_alt_outlined),
@@ -43,6 +49,7 @@ class DashboardPage extends GetView<DashboardController> {
           index: controller.currentPageIndex.value,
           children: [
             HomePage(),
+            UsersPage(),
             ClientsPage(),
             TagsPage(),
             UserProfilePage(),

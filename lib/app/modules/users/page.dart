@@ -1,15 +1,16 @@
 import 'package:app_ignitemanager/app/core/theme/app_theme.dart';
-import 'package:app_ignitemanager/app/data/models/tag.dart';
-import 'package:app_ignitemanager/app/modules/tags/controller.dart';
+import 'package:app_ignitemanager/app/data/models/user.dart';
+import 'package:app_ignitemanager/app/data/models/user_profile_request.dart';
+import 'package:app_ignitemanager/app/modules/users/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TagsPage extends GetView<TagsController> {
+class UsersPage extends GetView<UsersController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('Gestão de Tags')),
+        appBar: AppBar(title: Text('Gestão de Usuários')),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -37,7 +38,7 @@ class TagsPage extends GetView<TagsController> {
                       const Padding(
                         padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
                         child: Text(
-                          'Tags cadastrados',
+                          'Usuários cadastrados',
                           style: TextStyle(
                               fontSize: 18.0, fontWeight: FontWeight.bold),
                         ),
@@ -47,14 +48,14 @@ class TagsPage extends GetView<TagsController> {
                           child: ListView(
                             shrinkWrap: true,
                             children: [
-                              for (var client in state!)
+                              for (var user in state!)
                                 Obx(
                                   () => RadioListTile(
                                     title: Text(
-                                      client.name,
+                                      user.name,
                                       style: const TextStyle(fontSize: 14.0),
                                     ),
-                                    value: client.id,
+                                    value: user.id,
                                     groupValue: controller.selectedItem.value,
                                     onChanged: (value) {
                                       controller.selectedItem.value =
@@ -71,15 +72,13 @@ class TagsPage extends GetView<TagsController> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 30.0,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  _openEditModal();
-                },
-                child: Text('Criar Tag'),
-              ),
+              if (controller.currentUserType == 'admin')
+                ElevatedButton(
+                  onPressed: () async {
+                    _openEditModal();
+                  },
+                  child: Text('Criar Usuário'),
+                ),
               const SizedBox(
                 height: 30.0,
               ),
@@ -88,16 +87,19 @@ class TagsPage extends GetView<TagsController> {
                   if (controller.selectedItem.value == 0) {
                     Get.snackbar(
                       'Erro',
-                      'Nenhuma tag selecionada. Selecione uma tag antes de editar.',
+                      'Nenhum Usuário selecionado. Selecione um Usuário antes de editar.',
                       snackPosition: SnackPosition.BOTTOM,
                       backgroundColor: Colors.red,
                       colorText: Colors.white,
                     );
                   } else {
-                    _openEditModal(tagId: controller.selectedItem.value);
+                    _openEditModal(userId: controller.selectedItem.value);
                   }
                 },
-                child: Text('Editar Tag'),
+                child: Text('Editar Usuário'),
+              ),
+              const SizedBox(
+                height: 30.0,
               ),
             ],
           ),
@@ -106,20 +108,23 @@ class TagsPage extends GetView<TagsController> {
     );
   }
 
-  void _openEditModal({int? tagId}) async {
-    TagModel tag;
+  void _openEditModal({int? userId}) async {
+    UserModel user;
 
-    if (tagId != null) {
-      tag = await controller.fetchTagDetails(tagId);
+    if (userId != null) {
+      user = await controller.fetchUserDetails(userId);
     } else {
-      tag = TagModel(name: '', active: false);
+      user = UserModel(name: '', email: '');
     }
 
     TextEditingController nameController =
-        TextEditingController(text: tag.name);
+        TextEditingController(text: user.name);
+
+    TextEditingController emailController =
+        TextEditingController(text: user.email);
 
     Get.defaultDialog(
-      title: 'Editar Tag',
+      title: 'Editar Usuário',
       content: Container(
         width: Get.width * 0.7,
         child: Column(
@@ -133,16 +138,12 @@ class TagsPage extends GetView<TagsController> {
               ),
             ),
             SizedBox(height: 16),
-            ListTile(
-              leading: Obx(
-                () => Checkbox(
-                  value: controller.editModalController.isChecked.value,
-                  onChanged: (value) {
-                    controller.editModalController.isChecked.value = value!;
-                  },
-                ),
+            TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(
+                labelText: 'E-mail',
+                border: OutlineInputBorder(),
               ),
-              title: Text('Ativar/Desativar'),
             ),
             SizedBox(height: 16),
           ],
@@ -150,22 +151,25 @@ class TagsPage extends GetView<TagsController> {
       ),
       confirm: ElevatedButton(
         onPressed: () async {
-          tag.name = nameController.text;
+          user.name = nameController.text;
+          user.email = emailController.text;
 
-          if (tagId != null) {
-            await controller.updateTag(TagModel(
-              id: tagId,
-              name: tag.name,
-              active: controller.editModalController.isChecked.value,
+          if (userId != null) {
+            await controller.updateUser(UserModel(
+              id: userId,
+              name: user.name,
+              email: user.email,
             ));
           } else {
-            await controller.registerTag(TagModel(
-              name: tag.name,
-              active: controller.editModalController.isChecked.value,
+            await controller.registerUser(UserProfileRequestModel(
+              name: user.name,
+              email: user.email,
+              type: 'user',
+              password: '123456',
             ));
           }
 
-          await controller.updateTagList();
+          await controller.updateUsersList();
 
           Get.back();
         },

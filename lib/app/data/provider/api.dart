@@ -209,6 +209,16 @@ class Api extends GetConnect {
     return UserModel.fromJson(response.body);
   }
 
+  Future<UserModel> getUserById(int userId) async {
+    var response = _errorHandler(await get('user/$userId'));
+
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(response.body);
+    } else {
+      throw Exception('Falha ao buscar o usuário por ID');
+    }
+  }
+
   Future<UserModel> putUser(UserModel user, int userId) async {
     var data = {
       'name': user.name,

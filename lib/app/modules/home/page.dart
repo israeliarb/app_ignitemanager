@@ -7,7 +7,10 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ignite Manager'),
+        title: Text(
+          'Bem-vindo ao Ignite Manager!',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
         automaticallyImplyLeading: false,
       ),
       body: Padding(
@@ -15,11 +18,6 @@ class HomePage extends GetView<HomeController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Bem-vindo ao Ignite Manager!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
             buildStep('1. Realizar Login',
                 'Abra o aplicativo e insira seus dados de login.'),
             buildStep('2. Cadastrar Cliente',
@@ -28,6 +26,8 @@ class HomePage extends GetView<HomeController> {
                 'Vá até a seção de tags e registre uma nova tag.'),
             buildStep('4. Editar Tags do Cliente',
                 'Na seção de clientes, edite as tags associadas a cada cliente.'),
+            buildStep(
+                'Obs.:', 'Apenas o Admin logado pode criar novos usuários'),
           ],
         ),
       ),
